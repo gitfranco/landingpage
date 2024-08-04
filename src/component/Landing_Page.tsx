@@ -1,8 +1,18 @@
 import { useState } from "react";
-import { Search, MapPin, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Search,
+  MapPin,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  X,
+} from "lucide-react";
 
 const Landing_Page = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const properties = [
     {
@@ -38,6 +48,10 @@ const Landing_Page = () => {
     );
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-orange-100 font-sans pt-16">
       {/* Barra de navegación fija */}
@@ -46,7 +60,7 @@ const Landing_Page = () => {
           <div className="text-2xl font-bold text-blue-800 hover:text-orange-500 transition-colors duration-300">
             Casanort
           </div>
-          <div className="flex space-x-4">
+          <div className="hidden md:flex space-x-4">
             {["Inicio", "Propiedades", "Sobre Nosotros", "Contacto"].map(
               (item) => (
                 <a
@@ -59,7 +73,30 @@ const Landing_Page = () => {
               )
             )}
           </div>
+          <button
+            className="md:hidden text-orange-500 hover:text-blue-800 transition-colors duration-300"
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+        {/* Menú móvil */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white">
+            {["Inicio", "Propiedades", "Sobre Nosotros", "Contacto"].map(
+              (item) => (
+                <a
+                  key={item}
+                  href="#"
+                  className="block py-2 px-6 text-orange-500 hover:text-blue-800 hover:bg-gray-100 transition-colors duration-300"
+                  onClick={toggleMenu}
+                >
+                  {item}
+                </a>
+              )
+            )}
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -87,7 +124,7 @@ const Landing_Page = () => {
       {/* Sección de Propiedades Destacadas */}
       <section className="container mx-auto px-6 py-16">
         <h2 className="text-3xl font-semibold text-blue-800 mb-8 text-center">
-          Propiedades Destacadas
+          Nuestras Propiedades
         </h2>
         <div className="relative">
           <div className="flex overflow-hidden">
@@ -102,11 +139,13 @@ const Landing_Page = () => {
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 <div className="bg-white bg-opacity-70 backdrop-blur-md rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
-                  <img
-                    src={`/api/placeholder/800/500?text=${property.name}`}
-                    alt={property.name}
-                    className="w-full h-64 object-cover"
-                  />
+                  <Link to="/landingpage/galeria">
+                    <img
+                      src={`/api/placeholder/800/500?text=${property.name}`}
+                      alt={property.name}
+                      className="w-full h-64 object-cover"
+                    />
+                  </Link>
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-blue-800 mb-2">
                       {property.name}
@@ -217,6 +256,9 @@ const Landing_Page = () => {
             <div className="w-full md:w-1/4">
               <h3 className="text-lg font-semibold mb-2">Síguenos</h3>
               <div className="flex space-x-4">
+                <h3 className="text-lg font-semibold mb-2">
+                  ICONOS DE REDES SOCIALES
+                </h3>
                 {/* Aquí puedes agregar iconos de redes sociales */}
               </div>
             </div>
